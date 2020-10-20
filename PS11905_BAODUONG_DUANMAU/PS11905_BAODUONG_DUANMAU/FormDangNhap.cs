@@ -14,27 +14,44 @@ namespace PS11905_BAODUONG_DUANMAU
 {
     public partial class FormDangNhap : Form
     {
+        BUS_NhanVien busNhanVien = new BUS_NhanVien();
+        public string vaitro { set; get; }
+        public string matkhau { get; set; }
+        public bool IsFirstLogin { get; set; }
+
         public FormDangNhap()
         {
             InitializeComponent();
         }
+
         BUS_NhanVien busnhanvien = new BUS_NhanVien();
+
         private void btnLogin_Click(object sender, EventArgs e)
         {
             DTO_NhanVien nv = new DTO_NhanVien();
             nv.NV_Email = txtDangNhap.Text;
             nv.NV_MatKhau = busnhanvien.Encryption(txtMatKhau.Text);
+
             if (busnhanvien.NhanVienDangNhap(nv))
             {
+                FormMain.mail = nv.NV_Email;
+                DataTable dt = busNhanVien.VaiTroNhanVien(nv.NV_Email);
+                vaitro = dt.Rows[0][0].ToString();
                 MessageBox.Show("Đăng nhập thành công");
-                CheckDangNhap = 1;
-                Visible = false;
-                ShowInTaskbar = false;
-                FormMain frmMainN = new FormMain(CheckDangNhap);
-                frmMainN.Activate();
-                frmMainN.Show();
-                
-               
+                FormMain.session = 1;
+                FormMain.mail = txtDangNhap.Text;
+                if (busnhanvien.Encryption(txtMatKhau.Text).Equals("2331542419640203562132429613354120146463"))
+                {
+                    IsFirstLogin = true;
+                }
+                this.Close();
+                //CheckDangNhap = 1;
+                //Visible = false;
+                //ShowInTaskbar = false;
+                //FormMain frmMainN = new FormMain(CheckDangNhap);
+                //frmMainN.Activate();
+                //frmMainN.Show();
+
             }
             else
             {
@@ -44,53 +61,54 @@ namespace PS11905_BAODUONG_DUANMAU
                 txtDangNhap.Focus();
             }
         }
-
-        private void FormDangNhap_FormClosed(object sender, FormClosedEventArgs e)
+        private void FormDangNhap_Load(object sender, EventArgs e)
         {
-            Application.Exit();
+            FormMain.session = 0;
+        }
+        void FormDangNhap_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
 
         }
 
-        public static int CheckDangNhap=0;
+        //public static int CheckDangNhap=0;
 
         private void lbQuenMK_Click(object sender, EventArgs e)
         {
 
-            //try
-            //{
-            //    busnhanvien.SendMail(txtDangNhap.Text, (busnhanvien.RandomString(5, false) + busnhanvien.RandomNumber(0, 9)));
-            //    MessageBox.Show("Gui thanh cong");
-            //}
-            //catch (Exception)
-            //{
-
-            //    MessageBox.Show("Gui khong thanh cong");
-            //}
-
-            if (txtDangNhap.Text !="")
+            if (txtDangNhap.Text != "")
             {
-                if (busnhanvien.NhanVienQuenMatKhau(txtDangNhap.Text))
+                if (busNhanVien.NhanVienQuenMatKhau(txtDangNhap.Text))
                 {
-                    //StringBuilder builder = new StringBuilder();
-                    //builder.Append(busnhanvien.RandomString(4, true));
-                    //builder.Append(busnhanvien.RandomNumber(1000, 9999));
-                    //builder.Append(busnhanvien.RandomString(2, false));
-                    //string matkhaumoi = busnhanvien.Encryption(builder.ToString());
-                    //busnhanvien.TaoMatKhau(txtDangNhap.Text, matkhaumoi);
-                    //busnhanvien.SendMail(txtDangNhap.Text, builder.ToString());
-                    busnhanvien.SendMail(txtDangNhap.Text, (busnhanvien.RandomString(5, false) + busnhanvien.RandomNumber(0, 9)));
-                     MessageBox.Show("Gui thanh cong");
+                    StringBuilder builder = new StringBuilder();
+                    builder.Append(busNhanVien.RandomString(4, true));
+                    builder.Append(busNhanVien.RandomNumber(1000, 9999));
+                    builder.Append(busNhanVien.RandomString(2, false));
+                    MessageBox.Show(builder.ToString());
+
+                    DTO_NhanVien nv = new DTO_NhanVien();
+                    nv.NV_Email = txtDangNhap.Text;
+                    nv.NV_MatKhau = busNhanVien.Encryption(builder.ToString());
+
+                    if (busNhanVien.updateMK(nv))
+                    {
+                        MessageBox.Show("Thành công");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Không thành công");
+                    }
+                    busNhanVien.SendMail(txtDangNhap.Text, builder.ToString());
+                    MessageBox.Show("Gửi thành công");
                 }
-                else
-                {
-                    MessageBox.Show("Email không tồn tại, vui lòng nhập lại email");
-                }
+
             }
             else
             {
-                MessageBox.Show("Bạn cần nhập email để phục hồi mật khẩu");
-                txtDangNhap.Focus();
+                MessageBox.Show("Email Không tồn tại");
             }
         }
+
+
     }
 }

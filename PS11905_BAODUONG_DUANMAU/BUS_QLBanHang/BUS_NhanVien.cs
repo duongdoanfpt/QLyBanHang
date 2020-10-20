@@ -8,6 +8,7 @@ using System.Net.Mail;
 using System.Net;
 using DTO_QLBanHang;
 using DAL_QLBanHang;
+using System.Data;
 
 namespace BUS_QLBanHang
 {
@@ -22,6 +23,46 @@ namespace BUS_QLBanHang
         public bool NhanVienQuenMatKhau(string email)
         {
             return dalNhanVien.NhanVienQuenMatKhau(email);
+        }
+
+        public DataTable VaiTroNhanVien(string email)
+        {
+            return dalNhanVien.VaiTroNhanVien(email);
+        }
+
+        public bool UpdateMatKhau(string email, string matKhauCu, string matKhauMoi)
+        {
+            return dalNhanVien.UpdateMatKhau(email, matKhauCu, matKhauMoi);
+        }
+
+        public DataTable getAllNhanVien()
+        {
+            return dalNhanVien.getAllNhanVien();
+        }
+
+        public bool inserNhanVien(DTO_NhanVien nv)
+        {
+            return dalNhanVien.insertNhanVien(nv);
+        }
+
+        public bool updateNhanVien(DTO_NhanVien nv)
+        {
+            return dalNhanVien.updateNhanVien(nv);
+        }
+
+        public bool deleteNhanVien(string tendangnhap)
+        {
+            return dalNhanVien.DeleteNhanVien(tendangnhap);
+        }
+
+        public DataTable searchNhanVien(string tenNhanVien)
+        {
+            return dalNhanVien.SearchNhanVien(tenNhanVien);
+        }
+
+        public bool updateMK(DTO_NhanVien nv)
+        {
+            return dalNhanVien.TaoMatKhauMoi(nv);
         }
 
         public string Encryption(string password)

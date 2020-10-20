@@ -9,6 +9,7 @@ namespace DAL_QLBanHang
 {
     public class DBConnect
     {
-        protected SqlConnection _conn = new SqlConnection(@"Data Source=DESKTOP-KMNS09Q;Initial Catalog=QLyBanHang;Integrated Security=True");
+        //protected SqlConnection _conn = new SqlConnection(@"Data Source=.;Initial Catalog=QLyBanHang;Integrated Security=True");
+        protected SqlConnection _conn = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\QLyBanHang.mdf;Integrated Security=True");
     }
 }

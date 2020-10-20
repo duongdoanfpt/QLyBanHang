@@ -121,10 +121,9 @@ namespace DTO_QLBanHang
 
         }
 
-        public DTO_NhanVien(int id, string manv, string emailNV, string tenNV, string dchi, int vaiTro, int tinhTrang, string matKhau)
+        public DTO_NhanVien(string emailNV, string tenNV, string dchi, int vaiTro, int tinhTrang, string matKhau)
         {
-            this.NV_ID = id;
-            this.NV_MaNV = manv;
+            
             this.NV_Email = emailNV;
             this.NV_TenNV = tenNV;
             this.NV_DiaChi = dchi;
@@ -133,6 +132,19 @@ namespace DTO_QLBanHang
             this.NV_MatKhau = matKhau;
 
         }
+
+        public DTO_NhanVien(string emailNV, string tenNV, string dchi, int vaiTro, int tinhTrang)
+        {
+
+            this.NV_Email = emailNV;
+            this.NV_TenNV = tenNV;
+            this.NV_DiaChi = dchi;
+            this.NV_VaiTro = vaiTro;
+            this.NV_TinhTrang = tinhTrang;
+            
+
+        }
+
 
     }
 }
